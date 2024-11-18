@@ -45,7 +45,7 @@ end
 -- FUNCTIONS --
 function M.install_executables()
 	local shell = vim.fn.getenv("SHELL") or "/bin/sh"
-	local cmd = table.concat({ plugin_bin_dir .. "/" .. modules[1], table.unpack(execs) }, " ")
+	local cmd = table.concat({ plugin_bin_dir .. "/" .. modules[1], unpack(execs) }, " ") -- update to table.unpack as soon as nvim updates lua version to 5.4
 	local result = vim.fn.system(shell .. " -c '" .. cmd .. "'")
 	vim.api.nvim_out_write(result)
 end
