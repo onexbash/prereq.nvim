@@ -6,7 +6,6 @@ local plugin_dir
 local plugin_bin_dir
 local pkg_manager
 local modules
-local execs
 
 function M.setup(opts)
 	-- OPTS --
@@ -23,27 +22,22 @@ function M.setup(opts)
 	else
 		plugin_dir = vim.fn.stdpath("data") .. "/" .. pkg_manager .. "/" .. plugin_name
 	end
+	-- plugin_bin_dir
+	if opts.plugin_bin_dir then
+		plugin_bin_dir = opts.plugin_bin_dir
+	else
+		plugin_bin_dir = plugin_dir .. "/bin"
+	end
 	-- modules
 	if opts.modules then
 		modules = opts.modules
 	else
-		modules = { "ensure_exec", "test" }
+		modules = { "ensure_exec" }
 	end
-
-	plugin_bin_dir = plugin_dir .. "/bin"
-
-	-- execs
-	if opts.execs then
-		execs = opts.execs
-	else
-		execs = { "curl", "nvim", "lua", "tar", "grep", "git" }
-	end
-
-	M.install_executables()
 end
 
 -- FUNCTIONS --
-function M.install_executables()
+function M.install_execs(execs)
 	local shell = vim.fn.getenv("SHELL") or "/bin/sh"
 	local cmd = table.concat({ plugin_bin_dir .. "/" .. modules[1], unpack(execs) }, " ") -- update to table.unpack as soon as nvim updates lua version to 5.4
 	local result = vim.fn.system(shell .. " -c '" .. cmd .. "'")
