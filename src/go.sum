@@ -1,0 +1,4 @@
+github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
+github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/zcalusic/sysinfo v1.1.2 h1:38KUgZQmCxlN9vUTt4miis4rU5ISJXGXOJ2rY7bMC8g=
+github.com/zcalusic/sysinfo v1.1.2/go.mod h1:NX+qYnWGtJVPV0yWldff9uppNKU4h40hJIRPf/pGLv4=
