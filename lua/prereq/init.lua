@@ -1,9 +1,9 @@
 local M = {}
 
 -- VARIABLES --
-local plugin_dir
-local cmd_path
 local plugin_name = "prereq"
+local plugin_dir
+local plugin_bin_dir
 local pkg_manager
 local modules
 local execs
@@ -29,22 +29,25 @@ function M.setup(opts)
 	else
 		modules = { "ensure_exec", "test" }
 	end
+
+	plugin_bin_dir = plugin_dir .. "/bin"
+
 	-- execs
 	if opts.execs then
 		execs = opts.execs
 	else
 		execs = { "curl", "nvim", "lua", "tar", "grep", "git" }
 	end
+
+	M.install_executables()
 end
 
 -- FUNCTIONS --
-EXECUTABLES = execs
-function M.ensure_execs(EXECUTABLES)
-	cmd_path = plugin_dir .. "/" .. modules[1]
-	local result = vim.fn.system(cmd_path .. " " .. table.concat(EXECUTABLES, " "))
-	if vim.v.shell_error ~= 0 then
-		vim.api.nvim_err_writeln("Failed to ensure executables: " .. result)
-	end
+function M.install_executables()
+	local shell = vim.fn.getenv("SHELL") or "/bin/sh"
+	local cmd = table.concat({ plugin_bin_dir .. "/" .. modules[1], table.unpack(execs) }, " ")
+	local result = vim.fn.system(shell .. " -c '" .. cmd .. "'")
+	vim.api.nvim_out_write(result)
 end
 
 return M
