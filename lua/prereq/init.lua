@@ -20,7 +20,7 @@ function M.setup(opts)
 	if opts.plugin_dir then
 		plugin_dir = opts.plugin_dir
 	else
-		plugin_dir = vim.fn.stdpath("data") .. "/" .. pkg_manager .. "/" .. plugin_name
+		plugin_dir = vim.fn.stdpath("data") .. "/" .. pkg_manager .. "/" .. plugin_name .. ".nvim"
 	end
 	-- plugin_bin_dir
 	if opts.plugin_bin_dir then
@@ -32,7 +32,7 @@ function M.setup(opts)
 	if opts.modules then
 		modules = opts.modules
 	else
-		modules = { "ensure_exec" }
+		modules = { "ensure_execs" }
 	end
 end
 
