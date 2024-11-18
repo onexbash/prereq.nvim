@@ -1,11 +1,12 @@
 local M = {}
 
 -- VARIABLES --
-local binaries
 local plugin_dir
 local cmd_path
 local plugin_name = "prereq"
 local pkg_manager
+local modules
+local execs
 
 function M.setup(opts)
 	-- OPTS --
@@ -22,22 +23,27 @@ function M.setup(opts)
 	else
 		plugin_dir = vim.fn.stdpath("data") .. "/" .. pkg_manager .. "/" .. plugin_name
 	end
-	-- binaries
-	if opts.binaries then
-		binaries = opts.binaries
+	-- modules
+	if opts.modules then
+		modules = opts.modules
 	else
-		binaries = { "ensure_exec", "test" }
+		modules = { "ensure_exec", "test" }
+	end
+	-- execs
+	if opts.execs then
+		execs = opts.execs
+	else
+		execs = { "curl", "nvim", "lua", "tar", "grep", "git" }
 	end
 end
 
 -- FUNCTIONS --
-function M.ensure_executables(executables)
-	local result
-	-- construct path to ensure_exec binary
-	cmd_path = plugin_dir .. "/bin/" .. binaries[1] -- lua arrays start at index '1' not '0'
-	result = vim.fn.system(cmd_path .. " " .. table.concat(executables, " "))
+EXECUTABLES = execs
+function M.ensure_execs(EXECUTABLES)
+	cmd_path = plugin_dir .. "/" .. modules[1]
+	local result = vim.fn.system(cmd_path .. " " .. table.concat(EXECUTABLES, " "))
 	if vim.v.shell_error ~= 0 then
-		vim.api.nvim_err_writeln("error:" .. result)
+		vim.api.nvim_err_writeln("Failed to ensure executables: " .. result)
 	end
 end
 
